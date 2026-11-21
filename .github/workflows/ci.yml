@@ -1,0 +1,29 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: 0.11.24
+          enable-cache: true
+      - run: uv sync --locked
+      - run: uv run ruff check .
+      - run: uv run pytest
+
+  images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -f akshare/Dockerfile -t tapehub-akshare-adapter:ci .
+      - run: docker build -f baostock/Dockerfile -t tapehub-baostock-adapter:ci .
+      - run: docker build -f tqsdk/Dockerfile -t tapehub-tqsdk-adapter:ci .

@@ -1,0 +1,29 @@
+# 本地配置与凭据
+.env
+.env.*
+!.env.example
+/secrets/*
+!/secrets/.gitkeep
+*.pem
+
+# Python 运行与测试产物
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+.coverage
+htmlcov/
+
+# Python 构建产物
+*.egg-info/
+build/
+dist/
+
+# 本地工具与代理缓存（ZCode 会话计划等）
+/.zcode/
+
+# 日志、编辑器与操作系统
+*.log
+.DS_Store
+Thumbs.db

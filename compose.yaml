@@ -1,0 +1,57 @@
+services:
+  tapehub-akshare-adapter:
+    build:
+      context: .
+      dockerfile: akshare/Dockerfile
+    image: tapehub-akshare-adapter:dev
+    profiles: [akshare]
+    environment:
+      TAPEHUB_AKSHARE_MAX_INFLIGHT: "${TAPEHUB_AKSHARE_MAX_INFLIGHT:-4}"
+    restart: unless-stopped
+    stop_grace_period: 15s
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2).read()"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+  tapehub-baostock-adapter:
+    build:
+      context: .
+      dockerfile: baostock/Dockerfile
+    image: tapehub-baostock-adapter:dev
+    profiles: [baostock]
+    environment:
+      TAPEHUB_BAOSTOCK_MAX_INFLIGHT: "${TAPEHUB_BAOSTOCK_MAX_INFLIGHT:-4}"
+    restart: unless-stopped
+    stop_grace_period: 15s
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2).read()"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+  tapehub-tqsdk-adapter:
+    build:
+      context: .
+      dockerfile: tqsdk/Dockerfile
+    image: tapehub-tqsdk-adapter:dev
+    profiles: [tqsdk]
+    environment:
+      TAPEHUB_TQSDK_AUTH_USER: "${TAPEHUB_TQSDK_AUTH_USER:-}"
+      TAPEHUB_TQSDK_AUTH_PASSWORD: "${TAPEHUB_TQSDK_AUTH_PASSWORD:-}"
+      TAPEHUB_TQSDK_CONN_MODE: "${TAPEHUB_TQSDK_CONN_MODE:-shared}"
+      TAPEHUB_TQSDK_MAX_INFLIGHT_FETCH: "${TAPEHUB_TQSDK_MAX_INFLIGHT_FETCH:-16}"
+      TAPEHUB_TQSDK_FIRST_SNAPSHOT_TIMEOUT: "${TAPEHUB_TQSDK_FIRST_SNAPSHOT_TIMEOUT:-5}"
+      TAPEHUB_TQSDK_SUBSCRIPTION_LIMIT: "${TAPEHUB_TQSDK_SUBSCRIPTION_LIMIT:-64}"
+      TAPEHUB_TQSDK_CONSTRUCT_TIMEOUT: "${TAPEHUB_TQSDK_CONSTRUCT_TIMEOUT:-30}"
+    restart: unless-stopped
+    stop_grace_period: 15s
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2).read()"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s

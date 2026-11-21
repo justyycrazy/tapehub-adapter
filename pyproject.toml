@@ -1,0 +1,42 @@
+[project]
+name = "tapehub-adapter"
+version = "0.1.0"
+description = "TapeHub Python SDK 远程适配器"
+requires-python = ">=3.12"
+dependencies = [
+    "tapehub-adapter-common",
+    "tapehub-akshare-adapter",
+    "tapehub-baostock-adapter",
+    "tapehub-tqsdk-adapter",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = ["common", "akshare", "baostock", "tqsdk"]
+
+[tool.uv.sources]
+tapehub-adapter-common = { workspace = true }
+tapehub-akshare-adapter = { workspace = true }
+tapehub-baostock-adapter = { workspace = true }
+tapehub-tqsdk-adapter = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "httpx2>=2.16",
+    "pytest>=8.2",
+    "ruff>=0.5",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["common/tests", "akshare/tests", "baostock/tests", "tqsdk/tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["common/src", "akshare/src", "baostock/src", "tqsdk/src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
